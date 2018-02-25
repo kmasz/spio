@@ -48,4 +48,4 @@ venv/
 ~$*
 
 #txt files
-.txt
+*.txt
