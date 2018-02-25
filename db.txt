@@ -1,0 +1,4 @@
+  24h_volume_usd available_supply       id last_updated market_cap_usd  max_supply     name percent_change_1h percent_change_24h percent_change_7d price_btc price_usd rank symbol total_supply
+0   6721430000.0       16858562.0  bitcoin   1518367168   141703631377  21000000.0  Bitcoin             -0.49              -0.91             -1.37       1.0   8405.44    1    BTC   16858562.0
+0   6721430000.0       16858562.0  bitcoin   1518367168   141703631377  21000000.0  Bitcoin             -0.49              -0.91             -1.37       1.0   8405.44    1    BTC   16858562.0
+0   6721430000.0       16858562.0  bitcoin   1518367168   141703631377  21000000.0  Bitcoin             -0.49              -0.91             -1.37       1.0   8405.44    1    BTC   16858562.0

@@ -1,0 +1,12 @@
+   24h_volume_usd available_supply             id last_updated market_cap_usd max_supply           name percent_change_1h percent_change_24h percent_change_7d   price_btc price_usd rank symbol total_supply
+45      1464350.0       91043076.0  kucoin-shares   1518367455    499197380.0       None  KuCoin Shares             -0.94               1.69            -16.75  0.00065801   5.48309   46    KCS  181043076.0
+45      1464350.0       91043076.0  kucoin-shares   1518367455    499197380.0       None  KuCoin Shares             -0.94               1.69            -16.75  0.00065801   5.48309   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1457340.0       91043076.0  kucoin-shares   1518367754    500689576.0       None  KuCoin Shares             -0.64               2.05            -16.42  0.00065973   5.49948   46    KCS  181043076.0
+45      1450700.0       91043076.0  kucoin-shares   1518368655    498435349.0       None  KuCoin Shares             -1.66                1.7            -16.58  0.00066023   5.47472   46    KCS  181043076.0
+45      1453970.0       91043076.0  kucoin-shares   1518369255    502174488.0       None  KuCoin Shares             -1.33               2.57            -15.79  0.00066132   5.51579   46    KCS  181043076.0

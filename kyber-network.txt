@@ -1,0 +1,12 @@
+   24h_volume_usd available_supply             id last_updated market_cap_usd max_supply           name percent_change_1h percent_change_24h percent_change_7d  price_btc price_usd rank symbol total_supply
+52     10257200.0      134132697.0  kyber-network   1518367454    395439286.0       None  Kyber Network             -1.16              -5.34            -13.98  0.0003538   2.94812   53    KNC  215625349.0
+52     10257200.0      134132697.0  kyber-network   1518367454    395439286.0       None  Kyber Network             -1.16              -5.34            -13.98  0.0003538   2.94812   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52     10199300.0      134132697.0  kyber-network   1518367753    395621707.0       None  Kyber Network             -1.02              -5.24            -13.88  0.00035382   2.94948   53    KNC  215625349.0
+52      9945880.0      134132697.0  kyber-network   1518368654    391497127.0       None  Kyber Network             -1.74              -6.21            -14.63  0.00035199   2.91873   53    KNC  215625349.0
+52      9982810.0      134132697.0  kyber-network   1518369253    394151613.0       None  Kyber Network             -1.45              -5.51            -13.96  0.00035232   2.93852   53    KNC  215625349.0

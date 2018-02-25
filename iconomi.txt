@@ -1,0 +1,3 @@
+   24h_volume_usd available_supply       id last_updated market_cap_usd max_supply     name percent_change_1h percent_change_24h percent_change_7d   price_btc price_usd rank symbol total_supply
+99       698255.0       99735687.0  iconomi   1518367447    158638586.0       None  Iconomi             -0.21              -1.54            -11.06  0.00019088   1.59059  100    ICN   99735687.0
+99       698255.0       99735687.0  iconomi   1518367447    158638586.0       None  Iconomi             -0.21              -1.54            -11.06  0.00019088   1.59059  100    ICN   99735687.0

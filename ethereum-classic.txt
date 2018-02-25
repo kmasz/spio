@@ -1,0 +1,12 @@
+   24h_volume_usd available_supply                id last_updated market_cap_usd max_supply              name percent_change_1h percent_change_24h percent_change_7d   price_btc price_usd rank symbol total_supply
+15    371149000.0       99782207.0  ethereum-classic   1518367447   2503176358.0       None  Ethereum Classic              -1.5               3.78              15.7  0.00301055   25.0864   16    ETC   99782207.0
+15    371149000.0       99782207.0  ethereum-classic   1518367447   2503176358.0       None  Ethereum Classic              -1.5               3.78              15.7  0.00301055   25.0864   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    370418000.0       99782207.0  ethereum-classic   1518367747   2494635001.0       None  Ethereum Classic             -2.01               3.48             15.37  0.00299914   25.0008   16    ETC   99782207.0
+15    368881000.0       99782568.0  ethereum-classic   1518368646   2491151636.0       None  Ethereum Classic             -2.76               3.41             15.41  0.00301079   24.9658   16    ETC   99782568.0
+15    370710000.0       99782568.0  ethereum-classic   1518369247   2505610130.0       None  Ethereum Classic             -2.59               4.09             16.21  0.00301065   25.1107   16    ETC   99782568.0

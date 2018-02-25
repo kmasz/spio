@@ -1,0 +1,12 @@
+   24h_volume_usd available_supply          id last_updated market_cap_usd max_supply        name percent_change_1h percent_change_24h percent_change_7d   price_btc price_usd rank symbol total_supply
+94      4778040.0      617314171.0  quantstamp   1518367457    177619189.0       None  Quantstamp             -1.88              -0.96             12.96  0.00003453  0.287729   95    QSP  976442388.0
+94      4778040.0      617314171.0  quantstamp   1518367457    177619189.0       None  Quantstamp             -1.88              -0.96             12.96  0.00003453  0.287729   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4755720.0      617314171.0  quantstamp   1518367756    178086496.0       None  Quantstamp             -1.44              -0.52              13.3  0.00003461  0.288486   95    QSP  976442388.0
+94      4690650.0      617314171.0  quantstamp   1518368657    177224108.0       None  Quantstamp             -2.12              -0.51             12.88  0.00003462  0.287089   95    QSP  976442388.0
+95      4688690.0      617314171.0  quantstamp   1518369256    179072347.0       None  Quantstamp              -1.5               0.81             14.12  0.00003478  0.290083   96    QSP  976442388.0
