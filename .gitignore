@@ -49,3 +49,6 @@ venv/
 
 #txt files
 *.txt
+
+#db files
+*.db
