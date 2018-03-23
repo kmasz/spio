@@ -8,7 +8,6 @@ import sqlite3
 dataLink = 'https://api.coinmarketcap.com/v1/ticker/'
 sleep_time = 180 #czas pomiędzy odczytami danych
 
-#c = conn.cursor()
 db_data_types = {'24h_volume_usd': 'REAL', 'available_supply': 'REAL', 'id': 'TEXT', 'last_updated': 'REAL',
               'market_cap_usd': 'REAL', 'max_supply': 'REAL', 'name': 'TEXT', 'percent_change_1h': 'REAL',
               'percent_change_24h': 'REAL', 'percent_change_7d': 'REAL', 'price_btc': 'REAL', 'price_usd': 'REAL',
@@ -42,8 +41,12 @@ def timestamp2time(ts):
 
 def continiousreading(data):
     #TODO dodać sprawdznie czy dane się zmieniły, jeśli nie to nic nie robić
+    ####  DEV  ####
     conn = sqlite3.connect('cryptocurrency.db')
     datafile = open('db_log.txt', 'a')
+    #### PROD  ####
+    #conn = sqlite3.connect('/var/www/FlaskApp/FlaskApp/cryptocurrency.db')
+    #datafile = open('/var/www/FlaskApp/FlaskApp/db_log.txt', 'a')
     kolumna_danych = data.loc[:, 'id']   #bierzemy z DataFrame tylko kolumnę z 'id'
     datafile.write(str(timestamp2time(time.time()))+ ' : Zaczynam zapis danych')
     for k in range(0,len(kolumna_danych)):  #przechodzimy przez wszystkie zczytane dane -k jest od 0 do długości zmiennej: kolumna_danych
@@ -70,3 +73,4 @@ def continiousreading(data):
 
 
 if __name__ == '__main__': main()
+
