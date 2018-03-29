@@ -8,11 +8,25 @@ import plotly
 import plotly.graph_objs as go
 import sqlite3
 import pandas as pd
+import datetime
+import time
 
 
 app = dash.Dash(__name__) #TODO jak zmienić nazwę aplikacji i po co to w ogóle
-app.layout = html.Div(  #TODO dodać cały layout strony
-    [html.H2('Live Bitcoin price'),
+
+conn1 = sqlite3.connect('cryptocurrency.db') #TODO zparametryzować nazwę bazy danych
+df1 = pd.read_sql("SELECT name FROM sqlite_master WHERE type='table' ORDER BY 1 ASC", conn1)
+available_crypto = df1['name'].unique()
+
+app.layout = html.Div([  #TODO dodać cały layout strony
+     html.H2('Live Bitcoin price'),
+     html.Div([
+         dcc.Dropdown(
+             id='yaxis-column',
+             options=[{'label': i, 'value': i} for i in available_crypto],
+             value='bitcoin'
+         )
+     ]),
      dcc.Graph(id='live-graph', animate=True), #TODO przetestować czy nie wyłączyć animacji
      dcc.Interval(
          id='graph-update',
@@ -22,20 +36,24 @@ app.layout = html.Div(  #TODO dodać cały layout strony
 )
 
 @app.callback(Output('live-graph', 'figure'),
+              [Input(component_id='yaxis-column', component_property='value')],
               events=[Event('graph-update', 'interval')])
-def update_graph_scatter():
+def update_graph_scatter(available_crypto):
     try:
         ####  DEV  ####
         conn = sqlite3.connect('cryptocurrency.db') #TODO zparametryzować nazwę bazy danych
         ####  PROD  ####
         #conn = sqlite3.connect('/var/www/FlaskApp/FlaskApp/cryptocurrency.db') #TODO zparametryzować nazwę bazy danych
-        df = pd.read_sql("SELECT * FROM bitcoin ORDER BY last_updated DESC LIMIT 200", conn) #TODO dodać możliwośc wyboru różnyhc kryptowalut
+        #df = pd.read_sql("SELECT * FROM bitcoin ORDER BY last_updated DESC LIMIT 200", conn) #TODO dodać możliwośc wyboru różnyhc kryptowalut
+        query = "SELECT * FROM " + available_crypto + " ORDER BY last_updated DESC LIMIT 200"
+        df = pd.read_sql(query, conn) #TODO dodać możliwośc wyboru różnyhc kryptowalut
+        #df = pd.read_sql("SELECT * FROM ? ORDER BY last_updated DESC LIMIT 200", conn, params=('%' + available_crypto + '%',)) #TODO dodać możliwośc wyboru różnyhc kryptowalut
         df.sort_values('last_updated', inplace=True) # sortowanie danych wg. czasu
         df['date'] = pd.to_datetime(df['last_updated'], unit='s', utc=True) #zamiana unix_na datę-czas
         df.set_index('date', inplace=True) #dodanie lidexu na datę-czas
 #        df.index = df.index.tz_convert('Europe/Warsaw')
-        X = df.index[-100:] #pobpranie tylko 100 najświerzsych wpisów
-        Y = df.price_usd.values[-100:]
+        X = df.index[-200:] #pobpranie tylko 100 najświerzsych wpisów
+        Y = df.price_usd.values[-200:]
 
         data = plotly.graph_objs.Scatter(
             x=X,
@@ -52,7 +70,7 @@ def update_graph_scatter():
         with open('errors.txt', 'a') as f:
         ####  PROD  ####
         #with open('/var/www/FlaskApp/FlaskApp/errors.txt', 'a') as f:
-            f.write(str(e))
+            f.write(str(datetime.datetime.fromtimestamp(time.time())) + ': '+ str(e))
             f.write('\n')
 
 ####  PROD ####

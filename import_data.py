@@ -54,8 +54,11 @@ def continiousreading(data):
         table_name = str(kolumna_danych[k]) #zminna przechowująca nazwę tabeli
         # c.execute('CREATE TABLE IF NOT EXISTS table_name("24h_volume_usd" REAL, available_supply REAL, id TEXT, last_updated REAL, market_cap_usd REAL, max_supply REAL, name TEXT, percent_change_1h REAL, percent_change_24h REAL, percent_change_7d REAL, price_btc REAL, price_usd REAL, rank INTEGER, symbol TEXT, total_supply REAL)')
         #str_data.drop(axis=0)
-
-        str_data.to_sql(table_name, conn, if_exists='append', index=False, dtype=db_data_types)
+        if table_name.startswith('0'):
+            table_name = 'O'+ table_name
+            str_data.to_sql(table_name, conn, if_exists='append', index=False, dtype=db_data_types)
+        else:
+            str_data.to_sql(table_name, conn, if_exists='append', index=False, dtype=db_data_types)
 
         #if os.stat(nazwa_pliku).st_size == 0:   #sprawdzmy czy plik jest pusty -jeśli tak to zapisujemy nazwy indeksów, jeśli nie tylko dane
         #    datafile.write(str_data.to_string() + '\n')
