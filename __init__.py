@@ -33,16 +33,19 @@ app.layout = html.Div([  #TODO dodać cały layout strony
          id='graph-update',
          interval=1*1000 #co jaki czas odświarza się strona
      ),
-    dcc.Slider(
+    dcc.RangeSlider(
         id='date--slider',
         min=df2['last_updated'].min(),
         max=df2['last_updated'].max(),
-        value=df2['last_updated'].max(),
+        value=[df2['last_updated'].min(), df2['last_updated'].max()],
         #min=0,
         #max=10,
         #value=10,
-        step=None,
-        marks={int(date): datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M') for date in df2['last_updated'][::250].unique()}
+        #step=6000,
+        #dots=True,
+        #pushable=50,
+        allowCross=False,
+        marks={int(date): datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M') for date in df2['last_updated'][::250].unique()} #TODO zbudować ładny słownik markerów z dniami
         #marks={x: str(x)*3 for x in range(11)}
     ),
     html.H3(df2['last_updated'].count()),
@@ -66,16 +69,17 @@ def update_graph_scatter(available_crypto, date_value):
         df = pd.read_sql(query, conn)
         df.sort_values('last_updated', inplace=True) # sortowanie danych wg. czasu
         df['date'] = pd.to_datetime(df['last_updated'], unit='s', utc=True) #zamiana unix_na datę-czas
-        dff = df[df['last_updated'] < date_value]
-        with open('test.txt', 'a') as f:
-            f.write(str(datetime.datetime.fromtimestamp(time.time())) + ': ' + str(date_value))
-            f.write('\n')
-        dff.set_index('date', inplace=True) #dodanie lidexu na datę-czas
+        dff = df[df['last_updated'] < date_value[1]]
+        dfff = dff[dff['last_updated'] > date_value[0]]
+        #with open('test.txt', 'a') as f:
+        #    f.write(str(datetime.datetime.fromtimestamp(time.time())) + ': ' + str(date_value))
+        #    f.write('\n')
+        dfff.set_index('date', inplace=True) #dodanie lidexu na datę-czas
 #        df.index = df.index.tz_convert('Europe/Warsaw')
         #X = df.index[-200:] #pobpranie tylko 100 najświerzsych wpisów
-        X = dff.index[-date_value:]
+        X = dfff.index[-date_value[1]:]
         #Y = df.price_usd.values[-200:]
-        Y = dff.price_usd.values[-date_value:]
+        Y = dfff.price_usd.values[-date_value[1]:]
 
         data = plotly.graph_objs.Scatter(
             x=X,

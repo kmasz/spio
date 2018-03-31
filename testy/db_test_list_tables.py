@@ -27,8 +27,9 @@ df = pd.read_sql(query, conn)
 
 #X = df.index[-date_value:]
 dff = df[df['last_updated'] > 1521985467]
+dfff = dff[dff['last_updated'] < 1522342000]
 
-print(dff)
+print(dfff)
 #for date in df['last_updated'][::100].unique():
 #    print(datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M'))
     #print(int(date))
