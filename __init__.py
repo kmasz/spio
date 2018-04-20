@@ -10,14 +10,44 @@ import sqlite3
 import pandas as pd
 import datetime
 import time
+import configparser
+
+
+###CONFIG PART
+config = configparser.ConfigParser()
+if config.read('config/config.conf'):
+    ## DEV
+    server_type = config['DEFAULT']['servertype']
+elif config.read('/var/www/FlaskApp/FlaskApp/config/config.conf'):
+    ## PROD
+    server_type = config['DEFAULT']['servertype']
+else:
+    pass ##TODO dorobić obsługę błędu
+
+db_file = config[server_type]['db_source'] #path to db file
+
 
 
 app = dash.Dash(__name__) #TODO jak zmienić nazwę aplikacji i po co to w ogóle
 
-conn1 = sqlite3.connect('cryptocurrency.db') #TODO zparametryzować nazwę bazy danych
+####  DEV  ####
+conn1 = sqlite3.connect(db_file)
+####  PROD  ####
+#conn1 = sqlite3.connect(db_file)
 df1 = pd.read_sql("SELECT name FROM sqlite_master WHERE type='table' ORDER BY 1 ASC", conn1)
 df2 = pd.read_sql("SELECT * FROM bitcoin ORDER BY last_updated DESC", conn1)
+conn1.close()
 available_crypto = df1['name'].unique()
+date_marks = {}
+df2['date'] = pd.to_datetime(df2['last_updated'], unit='s', utc=True)
+for i in range(df2['date'].count()): #TODO czy da się zrobić dynamicznie wczytywany słwnik z markerami (niektóre kryptowaluty maja krótszą żywotność)
+    if i == 0:
+        date_marks[int(df2['last_updated'][i])] = df2['date'][i].strftime('%m-%d')
+    else:
+        if df2['date'][i-1].strftime('%m-%d') != df2['date'][i].strftime('%m-%d'):
+            date_marks[int(df2['last_updated'][i])] = df2['date'][i].strftime('%m-%d')
+
+
 
 app.layout = html.Div([  #TODO dodać cały layout strony
      html.H2('Live Cryptocurrency price'),
@@ -45,10 +75,11 @@ app.layout = html.Div([  #TODO dodać cały layout strony
         #dots=True,
         #pushable=50,
         allowCross=False,
-        marks={int(date): datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M') for date in df2['last_updated'][::250].unique()} #TODO zbudować ładny słownik markerów z dniami
+        marks=date_marks
+        #marks={int(date): datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M') for date in df2['last_updated'][::250].unique()} #TODO zbudować ładny słownik markerów z dniami
         #marks={x: str(x)*3 for x in range(11)}
     ),
-    html.H3(df2['last_updated'].count()),
+    #html.H3(date_marks['03-22']),
     #html.H3(datetime.datetime.fromtimestamp(df2['last_updated'].min())),
     #html.H3(str(datetime.datetime.fromtimestamp(df2['last_updated'][0]))),
      ]
@@ -61,9 +92,9 @@ app.layout = html.Div([  #TODO dodać cały layout strony
 def update_graph_scatter(available_crypto, date_value):
     try:
         ####  DEV  ####
-        conn = sqlite3.connect('cryptocurrency.db') #TODO zparametryzować nazwę bazy danych
+        conn = sqlite3.connect(db_file) #TODO zparametryzować nazwę bazy danych
         ####  PROD  ####
-        #conn = sqlite3.connect('/var/www/FlaskApp/FlaskApp/cryptocurrency.db') #TODO zparametryzować nazwę bazy danych
+        #conn = sqlite3.connect(db_file) #TODO zparametryzować nazwę bazy danych
         #query = "SELECT * FROM " + available_crypto + " ORDER BY last_updated DESC LIMIT 200"
         query = "SELECT * FROM " + available_crypto + " ORDER BY last_updated DESC"
         df = pd.read_sql(query, conn)

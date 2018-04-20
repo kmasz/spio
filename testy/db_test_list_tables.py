@@ -29,8 +29,25 @@ df = pd.read_sql(query, conn)
 dff = df[df['last_updated'] > 1521985467]
 dfff = dff[dff['last_updated'] < 1522342000]
 
-print(dfff)
+#print(dfff)
 #for date in df['last_updated'][::100].unique():
 #    print(datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M'))
     #print(int(date))
+df2['date'] = pd.to_datetime(df['last_updated'], unit='s', utc=True)
+#print(date): datetime.datetime.fromtimestamp(date).strftime('%m-%d %H:%M') for date in df2['last_updated'][::250].unique()
+#for date in df2['date']:
+#    df2['date'] = date.strftime('%m-%d')
+marki = {}
+for i in range(df2['date'].count()):
+#    x.append(df2['date'][i].strftime('%m-%d'))
+    #df2.iloc[i, 15] = df2['date'][i].strftime('%m-%d')
+    if i == 0:
+        marki[int(df2['last_updated'][i])] = df2['date'][i].strftime('%m-%d')
+    else:
+        if df2['date'][i-1].strftime('%m-%d') != df2['date'][i].strftime('%m-%d'):
+            marki[int(df2['last_updated'][i])] = df2['date'][i].strftime('%m-%d')
 
+    #df2['date'][i] = x
+   #print(df2['date'][i].strftime('%m-%d'))
+#print(df2['date'])
+print(marki)
