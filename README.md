@@ -1,0 +1,1 @@
+Aplikacja do agregowania danych o cenach kryptowalut
