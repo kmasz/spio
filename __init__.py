@@ -69,7 +69,54 @@ app.layout = html.Div([  #TODO dodać cały layout strony
      dcc.Interval(
          id='graph-update',
          interval=1*1000 #co jaki czas odświeża się strona
-     )],
+     ),
+     html.Div([
+         html.H3("[Knowledge base] Cryptocurrencies 101"),
+         html.P('A cryptocurrency is a medium of exchange like normal currencies such as USD, but designed for the'
+                ' purpose of exchanging digital information through a process made possible by certain principles of'
+                ' cryptography. Cryptography is used to secure the transactions and to control the creation of new'
+                ' coins. The first cryptocurrency to be created was Bitcoin back in 2009.',
+               className='article',
+               id='regulations'),
+         html.A("Read more",
+                href='https://www.ccn.com/cryptocurrency/',
+                target='blank')
+         ],
+         style={"width": "25%",
+                "margin": "2% 4%",
+                "display": "inline-block"}),
+     html.Div([
+         html.H3("[Law] Legal landscape around cryptos"),
+         html.P('As demand for cryptocurrency grows, global regulators are divided on how to keep up. '
+               'Most digital currencies are not backed by any central government, meaning each country '
+               'has different standards. Every seemingly small regulation announcement has driven the price of '
+               'bitcoin and other cryptocurrencies in 2018. Here\'s your guide to where digital currencies stand '
+               'with governments and regulators around the globe.',
+               className='article',
+               id='regulations'),
+         html.A("Read more",
+                href='https://www.cnbc.com/2018/03/27/a-complete-guide-to-cyprocurrency-regulations-around-the-world.html',
+                target='blank')
+         ],
+         style={"width": "25%",
+                "margin": "2% 4%",
+                "display": "inline-block"}),
+     html.Div([
+         html.H3("[Opinions] What to invest in"),
+         html.P('The financial world is changing, that’s something that many people have come to realize as solutions'
+                ' like cryptocurrency and Bitcoin take over traditional cash and stocks. Now that we’re finally in 2018,'
+                ' it’s safe to say that the crypto markets are stronger than ever, with more opportunities for'
+                ' investment on the way. Stellar Lumens, IOTA, and EOS are all big winners in the current marketplace,'
+                ' and there are plenty of additional options to consider too.',
+               className='article',
+               id='regulations'),
+         html.A("Read more",
+                href='https://www.mineweb.net/best-cryptocurrency-to-invest-in-2018',
+                target='blank')
+         ],
+         style={"width": "25%",
+                "margin": "2% 4%",
+                "display": "inline-block"})],
      style={"backgroundColor": "#fffefe",
             "fontFamily": "Calibri",
             "color": "#354b5e",
