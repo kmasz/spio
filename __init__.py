@@ -36,13 +36,20 @@ for quote in range(bitcoin_quotes['date'].count()): #TODO czy da się zrobić dy
 
 
 app.layout = html.Div([  #TODO dodać cały layout strony
-     html.H2('Live Cryptocurrency price'),
+     html.H2('Live Cryptocurrency price',
+             style={'textAlign': 'center',
+                    "color": "#354b5e"}),
      html.Div([
          dcc.Dropdown(
              id='yaxis-column',
              options=[{'label': crypto, 'value': crypto} for crypto in available_crypto],
              value='bitcoin'
-         ),
+         )
+     ],
+        style={"width": "35%",
+               "display": "inline-block",
+               "margin": "2% 7% 2% 8%"}),
+     html.Div([
          dcc.Dropdown(
              id='time-offset',
              options=[
@@ -52,17 +59,23 @@ app.layout = html.Div([  #TODO dodać cały layout strony
                 {'label': '1 day', 'value': 'day'},
                 {'label': '1 week', 'value': 'week'}
              ],
-             value='quarter'
+             value='quarter',
          )
-     ]),
+     ],
+        style={"width": "35%",
+               "display": "inline-block",
+               "margin": "2% 8% 2% 7%"}),
      dcc.Graph(id='live-graph', animate=True), #TODO przetestować czy nie wyłączyć animacji
      dcc.Interval(
          id='graph-update',
          interval=1*1000 #co jaki czas odświeża się strona
      )],
-     style={'backgroundColor': '#f9f9f9',
-            'fontFamily': 'Balto',
-            'font': '#2f3632'}
+     style={"backgroundColor": "#fffefe",
+            "fontFamily": "Calibri",
+            "color": "#354b5e",
+            "width": "84%",
+            "marginLeft": "auto",
+            "marginRight": "auto"}
 )
 
 
