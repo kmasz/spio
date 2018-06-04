@@ -48,13 +48,9 @@ for quote in range(bitcoin_quotes['date'].count()): #TODO czy da się zrobić dy
             date_marks[int(bitcoin_quotes['last_updated'][quote])] = bitcoin_quotes['date'][quote].strftime('%m-%d')
 
 app.layout = html.Div([  #TODO dodać cały layout strony
-<<<<<<< HEAD
      html.H2('Live Cryptocurrency price',
              style={'textAlign': 'center',
                     "color": "#354b5e"}),
-=======
-     html.H2('Live Bitcoin price'),
->>>>>>> 6dfc45b54dd3efc809ec3cb2b41bb32ce004df23
      html.Div([
          dcc.Dropdown(
              id='yaxis-column',
@@ -145,17 +141,11 @@ app.layout = html.Div([  #TODO dodać cały layout strony
 
 
 @app.callback(Output('live-graph', 'figure'),
-<<<<<<< HEAD
               [Input(component_id='yaxis-column', component_property='value'),
                Input(component_id='time-offset', component_property='value')],
               events=[Event('graph-update', 'interval')])
 def update_graph_scatter(selected_crypto, date_scope):
     offset = offsets[date_scope]
-=======
-              [Input(component_id='yaxis-column', component_property='value')],
-              events=[Event('graph-update', 'interval')])
-def update_graph_scatter(available_crypto):
->>>>>>> 6dfc45b54dd3efc809ec3cb2b41bb32ce004df23
     try:
         ####  DEV  ####
         conn = sqlite3.connect(db_file)  # TODO zparametryzować nazwę bazy danych
@@ -180,16 +170,11 @@ def update_graph_scatter(available_crypto):
             mode='lines+markers'
         )
 
-<<<<<<< HEAD
         return {'data': [data], 'layout': go.Layout(
             xaxis=dict(range=[min(X), max(X)], title=selected_crypto),
             yaxis=dict(range=[min(Y), max(Y)], title='price'),
             margin={'l': 70, 'b': 35, 't': 30, 'r': 50},
         )}
-=======
-        return {'data': [data],'layout': go.Layout(xaxis=dict(range=[min(X),max(X)]),
-                                               yaxis=dict(range=[min(Y),max(Y)]),)}
->>>>>>> 6dfc45b54dd3efc809ec3cb2b41bb32ce004df23
 
     except Exception as e:
         ####  DEV  ####
