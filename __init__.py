@@ -50,7 +50,7 @@ for i in range(df2['date'].count()): #TODO czy da się zrobić dynamicznie wczyt
 
 
 app.layout = html.Div([  #TODO dodać cały layout strony
-     html.H2('Live Cryptocurrency price'),
+     html.H2('Live Bitcoin price'),
      html.Div([
          dcc.Dropdown(
              id='yaxis-column',
@@ -86,10 +86,9 @@ app.layout = html.Div([  #TODO dodać cały layout strony
 )
 
 @app.callback(Output('live-graph', 'figure'),
-              [Input(component_id='yaxis-column', component_property='value'),
-               Input(component_id='date--slider', component_property='value')],
+              [Input(component_id='yaxis-column', component_property='value')],
               events=[Event('graph-update', 'interval')])
-def update_graph_scatter(available_crypto, date_value):
+def update_graph_scatter(available_crypto):
     try:
         ####  DEV  ####
         conn = sqlite3.connect(db_file) #TODO zparametryzować nazwę bazy danych
@@ -117,15 +116,10 @@ def update_graph_scatter(available_crypto, date_value):
             y=Y,
             name='Scatter',
             mode='lines+markers'
-            #fill = "tozeroy",
-            #fillcolor = "#6897bb"
         )
 
-        return {'data': [data],'layout': go.Layout(
-            xaxis=dict(range=[min(X),max(X)], title=available_crypto),
-            yaxis=dict(range=[min(Y),max(Y)], title='price'),
-            margin={'l': 70, 'b': 35, 't': 30, 'r': 50},
-        )}
+        return {'data': [data],'layout': go.Layout(xaxis=dict(range=[min(X),max(X)]),
+                                               yaxis=dict(range=[min(Y),max(Y)]),)}
 
     except Exception as e:
         ####  DEV  ####
