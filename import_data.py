@@ -5,6 +5,7 @@ import datetime
 import time
 import sqlite3
 import configparser
+import logging
 
 ###CONFIG PART
 config = configparser.ConfigParser()
@@ -21,6 +22,7 @@ dataLink = config['DEFAULT']['dataLink']
 db_file = config[server_type]['db_source'] #path to db file
 db_log =  config[server_type]['log_db'] #path to db log file
 sleep_time = int(config['DEFAULT']['sleep_time']) #czas pomiędzy odczytami danych
+logging.basicConfig(filename=db_log,level=logging.DEBUG, format='%(asctime)s :: %(levelname)s >> %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
 
 db_data_types = {'24h_volume_usd': 'REAL', 'available_supply': 'REAL', 'id': 'TEXT', 'last_updated': 'REAL',
               'market_cap_usd': 'REAL', 'max_supply': 'REAL', 'name': 'TEXT', 'percent_change_1h': 'REAL',
@@ -53,11 +55,11 @@ def main():
         data = pd.DataFrame(data)
         continiousreading(data)
     else:
-        pass #TODO dodać obsługę błedu
+        pass #TODO dodać obsługę błedu i logowanie
 
 def timestamp2time(ts):
     #jeśli ts nie jest INT to konwertuj na INT
-    #TODO dodać obsługe błędu
+    #TODO dodać obsługe błędu i logowanie
     if not isinstance(ts,int):
         ts = int(ts)
     _time = datetime.datetime.fromtimestamp(ts)  #konwersja z linux timestamp na datę
@@ -73,9 +75,10 @@ def replace_str(str_to_fix):
 def continiousreading(data):
     #TODO dodać sprawdznie czy dane się zmieniły, jeśli nie to nic nie robić
     conn = sqlite3.connect(db_file)
-    datafile = open(db_log, 'a')
+    #datafile = open(db_log, 'a')
     kolumna_danych = data.loc[:, 'id']   #bierzemy z DataFrame tylko kolumnę z 'id'
-    datafile.write(str(timestamp2time(time.time()))+ ' : Zaczynam zapis danych')
+    #datafile.write(str(timestamp2time(time.time()))+ ' : Zaczynam zapis danych')
+    logging.info('Zaczynam zapis danych')
     for k in range(0,len(kolumna_danych)):  #przechodzimy przez wszystkie zczytane dane -k jest od 0 do długości zmiennej: kolumna_danych
         str_data = data[data['id'] == kolumna_danych[k]]    #czytamy wiersz w którym 'id' równe jest wartości kalumna danych[k]
         table_name = str(kolumna_danych[k]) #zminna przechowująca nazwę tabeli
@@ -94,13 +97,14 @@ def continiousreading(data):
         #else:
         #    datafile.write(str_data.to_string().split('\n')[1] + '\n')
         #print('Data write down to file ', nazwa_pliku)  #pomocnicze drukowanie -do usunięcia
-        datafile.write('*')
+        #datafile.write('*')
 
 
 
     conn.close()
-    datafile.write('\n' + str(timestamp2time(time.time())) + ' : Dane zapisono. Czekam '+ str(sleep_time) +' sekund\n')
-    datafile.close()  # zamykamy strumień pliku
+    logging.info('Dane zapisono')
+    #datafile.write('\n' + str(timestamp2time(time.time())) + ' : Dane zapisono. Czekam '+ str(sleep_time) +' sekund\n')
+    #datafile.close()  # zamykamy strumień pliku
     time.sleep(sleep_time)  #czekamy sleep_time sekund
 
 
