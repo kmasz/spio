@@ -27,6 +27,18 @@ db_file = config[server_type]['db_source']  # path to db file
 
 app = dash.Dash(__name__)  # TODO jak zmienić nazwę aplikacji i po co to w ogóle
 
+
+#test
+def usd_price():
+    conn2 = sqlite3.connect('currency.db')
+    usd_price = pd.read_sql("SELECT * FROM usd_pln ORDER BY 1 DESC LIMIT 1", conn2)
+    conn2.close()
+    price = float(usd_price['value'])
+    current_date = str(usd_price['date'][0])
+    return price, current_date
+
+
+
 ####  DEV  ####
 conn1 = sqlite3.connect(db_file)
 ####  PROD  ####
@@ -129,7 +141,8 @@ app.layout = html.Div([  #TODO dodać cały layout strony
          ],
          style={"width": "25%",
                 "margin": "2% 4%",
-                "display": "inline-block"})],
+                "display": "inline-block"}),
+     html.Div('data = '+ str(usd_price()[1]) + ' wartość usd = ' + str(usd_price()[0]))],
 
      style={'backgroundColor': '#fffefe',
             "fontFamily": "Calibri",
@@ -138,7 +151,6 @@ app.layout = html.Div([  #TODO dodać cały layout strony
             "marginLeft": "auto",
             "marginRight": "auto"}
 )
-
 
 @app.callback(Output('live-graph', 'figure'),
               [Input(component_id='yaxis-column', component_property='value'),
@@ -186,6 +198,7 @@ def update_graph_scatter(selected_crypto, date_scope):
 #external_css = ["https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"]
 #for css in external_css:
 #    app.css.append_css({"external_url": css})
+
 
 
 ####  PROD ####

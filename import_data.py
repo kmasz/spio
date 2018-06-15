@@ -2,7 +2,6 @@ import json
 from urllib import request
 import pandas as pd
 import datetime
-import time
 import sqlite3
 import configparser
 import logging
@@ -19,7 +18,9 @@ else:
     pass ##TODO dorobić obsługę błędu
 
 dataLink = config['DEFAULT']['dataLink']
+nbp_link = config['DEFAULT']['nbp_link']
 db_file = config[server_type]['db_source'] #path to db file
+db_nbp_file = config[server_type]['db_nbp_source'] #path to nbp db file
 db_log =  config[server_type]['log_db'] #path to db log file
 sleep_time = int(config['DEFAULT']['sleep_time']) #czas pomiędzy odczytami danych
 logging.basicConfig(filename=db_log,level=logging.DEBUG, format='%(asctime)s :: %(levelname)s >> %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
@@ -41,7 +42,7 @@ def main():
     #########################################################
     ###DEV
     if server_type == 'DEV':
-        while True:
+        #while True:
             data = request.urlopen(dataLink)
             data = data.read().decode("utf-8")
             data = json.loads(data)
@@ -55,7 +56,7 @@ def main():
         data = pd.DataFrame(data)
         continiousreading(data)
     else:
-        pass #TODO dodać obsługę błedu i logowanie
+        pass  # TODO dodać obsługę błedu i logowanie
 
 def timestamp2time(ts):
     #jeśli ts nie jest INT to konwertuj na INT
@@ -89,6 +90,7 @@ def continiousreading(data):
         if table_name.startswith('0'):
             table_name = 'O'+ table_name
             str_data.to_sql(table_name, conn, if_exists='append', index=False, dtype=db_data_types)
+            ## TODO zamiast tego dodać obsługę błędu -tu nigdy nie wejdzie -zawsze trafi do elsa
         else:
             str_data.to_sql(table_name, conn, if_exists='append', index=False, dtype=db_data_types)
 
@@ -103,10 +105,33 @@ def continiousreading(data):
 
     conn.close()
     logging.info('Dane zapisono')
+    nbp_reading()
     #datafile.write('\n' + str(timestamp2time(time.time())) + ' : Dane zapisono. Czekam '+ str(sleep_time) +' sekund\n')
     #datafile.close()  # zamykamy strumień pliku
-    time.sleep(sleep_time)  #czekamy sleep_time sekund
+    #time.sleep(sleep_time)  #czekamy sleep_time sekund
+
+def nbp_reading():
+    try:
+        data = request.urlopen(nbp_link)
+        data = data.read().decode("utf-8")
+        data = json.loads(data)
+        data = pd.DataFrame(data)
+        data = data['rates'].to_json()
+        data = json.loads(data)
+        data = pd.DataFrame(data)
+        dzien = data.iat[0, 0]
+        wartosc_usd = data.iat[1, 0]
+        conn = sqlite3.connect(db_nbp_file)
+        c = conn.cursor()
+        c.execute("CREATE TABLE IF NOT EXISTS usd_pln(id INTEGER PRIMARY KEY, date TEXT, value REAL)")
+        c.execute("INSERT INTO usd_pln (date, value) VALUES (?, ?)",
+                  (dzien, wartosc_usd))
+        conn.commit()
+        c.close()
+        conn.close()
+    except Exception as e:
+        logging.error(str(e))
 
 
-if __name__ == '__main__': main()
-
+if __name__ == '__main__':
+    main()
