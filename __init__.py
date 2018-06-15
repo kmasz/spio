@@ -59,7 +59,7 @@ for quote in range(bitcoin_quotes['date'].count()): #TODO czy da się zrobić dy
         if bitcoin_quotes['date'][quote - 1].strftime('%m-%d') != bitcoin_quotes['date'][quote].strftime('%m-%d'):
             date_marks[int(bitcoin_quotes['last_updated'][quote])] = bitcoin_quotes['date'][quote].strftime('%m-%d')
 
-app.layout = html.Div([  #TODO dodać cały layout strony
+app.layout = html.Div(children=[  #TODO dodać cały layout strony
      html.H2('Live Cryptocurrency price',
              style={'textAlign': 'center',
                     "color": "#354b5e"}),
@@ -142,7 +142,8 @@ app.layout = html.Div([  #TODO dodać cały layout strony
          style={"width": "25%",
                 "margin": "2% 4%",
                 "display": "inline-block"}),
-     html.Div('data = '+ str(usd_price()[1]) + ' wartość usd = ' + str(usd_price()[0]))],
+     html.Div('data = '+ str(usd_price()[1]) + ' wartość usd = ' + str(usd_price()[0])),
+    html.Div(id='output')],
 
      style={'backgroundColor': '#fffefe',
             "fontFamily": "Calibri",
@@ -151,6 +152,7 @@ app.layout = html.Div([  #TODO dodać cały layout strony
             "marginLeft": "auto",
             "marginRight": "auto"}
 )
+
 
 @app.callback(Output('live-graph', 'figure'),
               [Input(component_id='yaxis-column', component_property='value'),
@@ -199,7 +201,20 @@ def update_graph_scatter(selected_crypto, date_scope):
 #for css in external_css:
 #    app.css.append_css({"external_url": css})
 
-
+@app.callback(
+    Output(component_id='output', component_property='children'),
+    [Input(component_id='yaxis-column', component_property='value')]
+)
+def update_value(input_data):
+    conn3 = sqlite3.connect(db_file)
+    c = conn3.cursor()
+    c.execute("SELECT price_usd FROM " + input_data + " ORDER BY last_updated DESC limit 1")
+    #query = "SELECT price_usd FROM (input_data) ORDER BY last_updated DESC limit 1"
+    data = c.fetchall()
+    c.close()
+    conn3.close()
+    #all_currencies_data = pd.read_sql(query, conn3)
+    return 'wartość crytowaluty: {}'.format(data[0][0])
 
 ####  PROD ####
 if server_type == 'PROD':
