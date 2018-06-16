@@ -67,19 +67,10 @@ app.layout = html.Div(children=[  #TODO dodać cały layout strony
          dcc.Dropdown(
              id='yaxis-column',
              options=[{'label': crypto, 'value': crypto} for crypto in available_crypto],
-             value='bitcoin'
+             value='bitcoin',
+             multi=True
          )
      ],
-        style={"width": "35%",
-               "display": "inline-block",
-               "margin": "2% 7% 2% 8%"}),
-    html.Div([
-        dcc.Dropdown(
-            id='yaxis1-column',
-            options=[{'label': crypto, 'value': crypto} for crypto in available_crypto],
-            value='bitcoin'
-        )
-    ],
         style={"width": "35%",
                "display": "inline-block",
                "margin": "2% 7% 2% 8%"}),
@@ -100,7 +91,8 @@ app.layout = html.Div(children=[  #TODO dodać cały layout strony
         style={"width": "35%",
                "display": "inline-block",
                "margin": "2% 8% 2% 7%"}),
-     dcc.Graph(id='live-graph', animate=False), #TODO przetestować czy nie wyłączyć animacji
+    html.Div(children=html.Div(id='graphs'), className='row'),
+     #dcc.Graph(id='live-graph', animate=True), #TODO przetestować czy nie wyłączyć animacji
      dcc.Interval(
          id='graph-update',
          interval=10*1000 #co jaki czas odświeża się strona
@@ -164,67 +156,60 @@ app.layout = html.Div(children=[  #TODO dodać cały layout strony
 )
 
 
-@app.callback(Output('live-graph', 'figure'),
+@app.callback(Output('graphs', 'children'),
               [Input(component_id='yaxis-column', component_property='value'),
-               Input(component_id='yaxis1-column', component_property='value'),
                Input(component_id='time-offset', component_property='value')],
               events=[Event('graph-update', 'interval')])
-def update_graph_scatter(selected_crypto, selected_crypto1, date_scope):
+def update_graph_scatter(selected_cryptos, date_scope):
     offset = offsets[date_scope]
-    ####  DEV  ####
-    conn = sqlite3.connect(db_file)  # TODO zparametryzować nazwę bazy danych
-    ####  PROD  ####
-    query = "SELECT * FROM " + selected_crypto + " ORDER BY last_updated DESC"
-    query1 = "SELECT * FROM " + selected_crypto1 + " ORDER BY last_updated DESC"
-    all_currencies_data = pd.read_sql(query, conn)
-    all_currencies_data1 = pd.read_sql(query1, conn)
-    all_currencies_data.sort_values('last_updated', inplace=True) # sortowanie danych wg. czasu
-    all_currencies_data1.sort_values('last_updated', inplace=True) # sortowanie danych wg. czasu
-    updates_times = all_currencies_data['last_updated']
-    updates_times1 = all_currencies_data1['last_updated']
-    oldest_record = updates_times.max() - offset if updates_times.max() - offset > updates_times.min() else updates_times.min()
-    oldest_record1 = updates_times1.max() - offset if updates_times1.max() - offset > updates_times1.min() else updates_times1.min()
+    graphs = []
+    if len(selected_cryptos)>2:
+        class_choice = 'col s12 m6 l4'
+    elif len(selected_cryptos) == 2:
+        class_choice = 'col s12 m6 l6'
+    else:
+        class_choice = 'col s12'
 
-    scoped_currencies = all_currencies_data.loc[all_currencies_data['last_updated'] > oldest_record]
-    scoped_currencies1 = all_currencies_data1.loc[all_currencies_data1['last_updated'] > oldest_record1]
-    scoped_currencies['date'] = pd.to_datetime(updates_times, unit='s', utc=True) #zamiana unix_na datę-czas
-    scoped_currencies1['date'] = pd.to_datetime(updates_times1, unit='s', utc=True) #zamiana unix_na datę-czas
+    for selected_crypto in selected_cryptos:
+        ####  DEV  ####
+        conn = sqlite3.connect(db_file)  # TODO zparametryzować nazwę bazy danych
+        ####  PROD  ####
+        query = "SELECT * FROM " + selected_crypto + " ORDER BY last_updated DESC"
+        all_currencies_data = pd.read_sql(query, conn)
+        all_currencies_data.sort_values('last_updated', inplace=True) # sortowanie danych wg. czasu
+        updates_times = all_currencies_data['last_updated']
+        oldest_record = updates_times.max() - offset if updates_times.max() - offset > updates_times.min() else updates_times.min()
 
-    scoped_currencies.set_index('date', inplace=True) #dodanie lidexu na datę-czas
-    scoped_currencies1.set_index('date', inplace=True) #dodanie lidexu na datę-czas
-    X = scoped_currencies.index
-    X1 = scoped_currencies1.index
-    Y = scoped_currencies.price_usd.values
-    Y1 = scoped_currencies1.price_usd.values
+        scoped_currencies = all_currencies_data.loc[all_currencies_data['last_updated'] > oldest_record]
+        scoped_currencies['date'] = pd.to_datetime(updates_times, unit='s', utc=True) #zamiana unix_na datę-czas
 
-    data = plotly.graph_objs.Scatter(
-        x=X,
-        y=Y,
-        name='Scatter',
-        mode='lines+markers'
-    )
-    data1 = plotly.graph_objs.Scatter(
-        x=X1,
-        y=Y1,
-        name='Scatter1',
-        mode='lines+markers',
-        yaxis='y2'
-    )
+        scoped_currencies.set_index('date', inplace=True) #dodanie lidexu na datę-czas
+        X = scoped_currencies.index
+        Y = scoped_currencies.price_usd.values
 
-    return {'data': [data, data1], 'layout': go.Layout(
-        xaxis=dict(range=[min(X), max(X)], title=selected_crypto),
-        #yaxis=dict(range=[min(min(Y),min(Y1)), max(max(Y),max(Y1))], title='price'),
-        yaxis=dict(range=[min(Y), max(Y)], title='price'),
-        yaxis2=dict(range=[min(Y1), max(Y1)], title='price1', overlaying='y', side='right'),
-        margin={'l': 70, 'b': 35, 't': 30, 'r': 50},
-    )}
+        data = plotly.graph_objs.Scatter(
+            x=X,
+            y=Y,
+            name='Scatter',
+            mode='lines+markers'
+        )
+        graphs.append(html.Div(dcc.Graph(
+            id=selected_crypto,
+            animate=True,
+            figure={'data': [data], 'layout': go.Layout(
+            xaxis=dict(range=[min(X), max(X)], title=selected_crypto),
+            yaxis=dict(range=[min(Y), max(Y)], title='price'),
+            margin={'l': 70, 'b': 35, 't': 30, 'r': 50}
+        )}), className=class_choice))
+    return graphs
+
 
 
 #external_css = ["https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"]
 #for css in external_css:
 #    app.css.append_css({"external_url": css})
 
-@app.callback(
+"""@app.callback(
     Output(component_id='output', component_property='children'),
     [Input(component_id='yaxis-column', component_property='value')]
 )
@@ -238,6 +223,15 @@ def update_value(input_data):
     conn3.close()
     #all_currencies_data = pd.read_sql(query, conn3)
     return 'wartość crytowaluty: {}'.format(data[0][0])
+"""
+
+external_css = ["https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css"]
+for css in external_css:
+    app.css.append_css({"external_url": css})
+
+external_js = ['https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js']
+for js in external_css:
+    app.scripts.append_script({'external_url': js})
 
 ####  PROD ####
 if server_type == 'PROD':
@@ -245,6 +239,3 @@ if server_type == 'PROD':
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
-
-#https://plot.ly/python/multiple-axes/
