@@ -78,11 +78,11 @@ app.layout = html.Div(children=[  #TODO dodać cały layout strony
          dcc.Dropdown(
              id='time-offset',
              options=[
-                {'label': '15 minutes', 'value': 'quarter'},
-                {'label': '1 hour', 'value': 'hour'},
-                {'label': '4 hours', 'value': '4hours'},
-                {'label': '1 day', 'value': 'day'},
-                {'label': '1 week', 'value': 'week'}
+                {'label': '15 minut', 'value': 'quarter'},
+                {'label': '1 godzina', 'value': 'hour'},
+                {'label': '4 godziny', 'value': '4hours'},
+                {'label': '1 dzień', 'value': 'day'},
+                {'label': '1 tydzień', 'value': 'week'}
              ],
              value='quarter',
          )
